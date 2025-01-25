@@ -1,12 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterSlice from "./features/counter/counterSlice";
-import logger from "./middleware/logger";
-
+import taskSlice from "./features/task/taskSlice";
 export const store = configureStore({
   reducer: {
     counter: counterSlice,
+    todo: taskSlice,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
