@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +13,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { Calendar } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -20,11 +20,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { addTask } from "@/redux/features/task/taskSlice";
+
 export function AddTask() {
   const form = useForm();
+  const dispatch = useDispatch();
 
   const onSubmit = (data) => {
     console.log(data);
+    dispatch(addTask(data));
   };
   return (
     <Dialog>
@@ -58,7 +67,7 @@ export function AddTask() {
             />
             <FormField
               control={form.control}
-              name="title"
+              name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description </FormLabel>
@@ -74,31 +83,62 @@ export function AddTask() {
             />
             <FormField
               control={form.control}
-              name="title"
+              name="dueDate"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Due Date </FormLabel>
-                  <FormControl>
-                    <Calendar {...field} />
-                  </FormControl>
+                <FormItem className="flex flex-col">
+                  <FormLabel>Due Date</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            " pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="title"
+              name="priority"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Priority </FormLabel>
                   <FormControl>
-                    <Select {...field}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Select priority" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="light">High</SelectItem>
-                        <SelectItem value="dark">Medium`</SelectItem>
-                        <SelectItem value="system">Low</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
+                        <SelectItem value="medium">Medium`</SelectItem>
+                        <SelectItem value="low">Low</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>

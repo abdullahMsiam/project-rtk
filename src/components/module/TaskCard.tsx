@@ -23,9 +23,9 @@ const TaskCard = ({ task }: IProps) => {
         <div className={`text-lg font-bold flex items-center gap-2 `}>
           <div
             className={cn("size-3 rounded-full", {
-              "bg-green-500": task.priority === "Low",
-              "bg-yellow-500": task.priority === "Medium",
-              "bg-red-500": task.priority === "High",
+              "bg-green-500": task.priority === "low",
+              "bg-yellow-500": task.priority === "medium",
+              "bg-red-500": task.priority === "high",
             })}
           ></div>
           {task.title}

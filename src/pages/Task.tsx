@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 export default function Task() {
   const tasks = useSelector(selectTasks);
-  console.log(tasks.map((task) => console.log(task.id)));
+  console.log(tasks);
   return (
     <div>
       <div className="flex justify-between items-center mb-3">
