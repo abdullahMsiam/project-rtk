@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import {
@@ -22,18 +22,19 @@ import {
 } from "../ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { formatISO } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { addTask } from "@/redux/features/task/taskSlice";
+import { ITask } from "@/type";
 
 export function AddTask() {
   const form = useForm();
   const dispatch = useDispatch();
 
-  const onSubmit = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
-    dispatch(addTask(data));
+    dispatch(addTask(data as ITask));
   };
   return (
     <Dialog>
@@ -98,7 +99,7 @@ export function AddTask() {
                           )}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            formatISO(field.value)
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -111,9 +112,9 @@ export function AddTask() {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date > new Date() || date < new Date("1900-01-01")
-                        }
+                        // disabled={(date) =>
+                        //   date > new Date() || date < new Date("1900-01-01")
+                        // }
                         initialFocus
                       />
                     </PopoverContent>
