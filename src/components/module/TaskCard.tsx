@@ -10,6 +10,8 @@ import {
   toggleCompleteState,
 } from "@/redux/features/task/taskSlice";
 import { useAppDispatch } from "@/redux/hook";
+import { useSelector } from "react-redux";
+import { selectUsers } from "@/redux/features/user/userSlice";
 
 interface IProps {
   task: ITask;
@@ -17,6 +19,8 @@ interface IProps {
 
 const TaskCard = ({ task }: IProps) => {
   const dispatch = useAppDispatch();
+  const users = useSelector(selectUsers);
+  const assignedUser = users.find((user) => user.id === task.assignedUser);
   return (
     <div className=" border-2 shadow-lg rounded-lg p-4 flex justify-between items-center space-x-4">
       <div className="flex-1">
@@ -32,6 +36,7 @@ const TaskCard = ({ task }: IProps) => {
             {task.title}
           </h1>
         </div>
+        <p> Assigned to: {assignedUser ? assignedUser.name : "no one"}</p>
         <p>{task.description}</p>
       </div>
       <div className="flex space-x-2 justify-center items-center">
