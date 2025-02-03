@@ -28,8 +28,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTask } from "@/redux/features/task/taskSlice";
 import { ITask } from "@/type";
 import { selectUsers } from "@/redux/features/user/userSlice";
+import { useState } from "react";
 
 export function AddTask() {
+  const [open, setOpen] = useState(false);
   const form = useForm();
   const dispatch = useDispatch();
   const users = useSelector(selectUsers);
@@ -37,9 +39,11 @@ export function AddTask() {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
     dispatch(addTask(data as ITask));
+    setOpen(false);
+    form.reset();
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogDescription className="sr-only">
         This is for add a task
       </DialogDescription>

@@ -1,6 +1,7 @@
 import { RootState } from "@/redux/store";
 import { ITask } from "@/type";
 import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { removeUser } from "../user/userSlice";
 // import { v4 as uuidv4 } from "uuid";
 interface IInitialState {
   tasks: ITask[];
@@ -15,6 +16,7 @@ const initialState: IInitialState = {
       dueDate: "2023-06-01",
       isCompleted: false,
       priority: "low",
+      assignedUser: null,
     },
     {
       id: "veve-uni-is-here",
@@ -23,14 +25,23 @@ const initialState: IInitialState = {
       dueDate: "2023-06-01",
       isCompleted: true,
       priority: "low",
+      assignedUser: null,
     },
   ],
   filter: "all",
 };
 
-type TDraftTask = Pick<ITask, "title" | "description" | "dueDate" | "priority">;
+type TDraftTask = Pick<
+  ITask,
+  "title" | "description" | "dueDate" | "priority" | "assignedUser"
+>;
 const createTask = (taskData: TDraftTask): ITask => {
-  return { id: nanoid(), isCompleted: false, ...taskData };
+  return {
+    ...taskData,
+    id: nanoid(),
+    isCompleted: false,
+    assignedUser: taskData.assignedUser ? taskData.assignedUser : null,
+  };
 };
 
 const taskSlice = createSlice({
@@ -58,6 +69,13 @@ const taskSlice = createSlice({
     ) => {
       state.filter = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(removeUser, (state, action) => {
+      state.tasks.forEach((task) =>
+        task.assignedUser === action.payload ? (task.assignedUser = null) : task
+      );
+    });
   },
 });
 
