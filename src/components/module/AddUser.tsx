@@ -11,18 +11,13 @@ import {
 } from "../ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
-import { useDispatch } from "react-redux";
-import { addUser } from "@/redux/features/user/userSlice";
-import { IUser } from "@/type";
 import { Plus } from "lucide-react";
 
 export default function AddUser() {
   const form = useForm();
-  const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
-    dispatch(addUser(data as IUser));
   };
   return (
     <div>

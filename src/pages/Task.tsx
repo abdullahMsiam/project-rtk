@@ -1,15 +1,39 @@
 import { AddTask } from "@/components/module/AddTask";
 import TaskCard from "@/components/module/TaskCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { selectTasks, updateFilter } from "@/redux/features/task/taskSlice";
-import { useAppDispatch } from "@/redux/hook";
 import { ITask } from "@/type";
-import { useSelector } from "react-redux";
 
 export default function Task() {
-  const tasks = useSelector(selectTasks);
+  const tasks: ITask[] = [
+    {
+      id: "1",
+      title: "Task 1",
+      description: "Task 1 description",
+      dueDate: "2021-08-01",
+      isCompleted: false,
+      priority: "high",
+      assignedUser: "1",
+    },
+    {
+      id: "2",
+      title: "Task 2",
+      description: "Task 2 description",
+      dueDate: "2021-08-01",
+      isCompleted: false,
+      priority: "medium",
+      assignedUser: "2",
+    },
+    {
+      id: "3",
+      title: "Task 3",
+      description: "Task 3 description",
+      dueDate: "2021-08-01",
+      isCompleted: false,
+      priority: "low",
+      assignedUser: "3",
+    },
+  ];
   console.log(tasks);
-  const dispatch = useAppDispatch();
   return (
     <div>
       <div className="flex justify-end items-center mb-3 gap-3">
@@ -17,30 +41,10 @@ export default function Task() {
 
         <Tabs defaultValue="all">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger
-              onClick={() => dispatch(updateFilter("all"))}
-              value="all"
-            >
-              All
-            </TabsTrigger>
-            <TabsTrigger
-              onClick={() => dispatch(updateFilter("high"))}
-              value="high"
-            >
-              High
-            </TabsTrigger>
-            <TabsTrigger
-              onClick={() => dispatch(updateFilter("medium"))}
-              value="medium"
-            >
-              Medium
-            </TabsTrigger>
-            <TabsTrigger
-              onClick={() => dispatch(updateFilter("low"))}
-              value="low"
-            >
-              Low
-            </TabsTrigger>
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="high">High</TabsTrigger>
+            <TabsTrigger value="medium">Medium</TabsTrigger>
+            <TabsTrigger value="low">Low</TabsTrigger>
           </TabsList>
         </Tabs>
         <AddTask />

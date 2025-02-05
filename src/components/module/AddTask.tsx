@@ -24,21 +24,32 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { formatISO } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "@/redux/features/task/taskSlice";
-import { ITask } from "@/type";
-import { selectUsers } from "@/redux/features/user/userSlice";
 import { useState } from "react";
 
 export function AddTask() {
   const [open, setOpen] = useState(false);
   const form = useForm();
-  const dispatch = useDispatch();
-  const users = useSelector(selectUsers);
+  const users = [
+    {
+      id: "1",
+      name: "John Doe",
+    },
+    {
+      id: "2",
+      name: "Jane Doe",
+    },
+    {
+      id: "3",
+      name: "John Smith",
+    },
+    {
+      id: "4",
+      name: "Jane Smith",
+    },
+  ];
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
-    dispatch(addTask(data as ITask));
     setOpen(false);
     form.reset();
   };

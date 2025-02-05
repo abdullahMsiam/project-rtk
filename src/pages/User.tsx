@@ -1,10 +1,25 @@
 import AddUser from "@/components/module/AddUser";
 import UserCard from "@/components/module/UserCard";
-import { selectUsers } from "@/redux/features/user/userSlice";
-import { useSelector } from "react-redux";
 
 const User = () => {
-  const users = useSelector(selectUsers);
+  const users = [
+    {
+      id: "1",
+      name: "John Doe",
+    },
+    {
+      id: "2",
+      name: "Jane Doe",
+    },
+    {
+      id: "3",
+      name: "John Smith",
+    },
+    {
+      id: "4",
+      name: "Jane Smith",
+    },
+  ];
   console.log(users);
   return (
     <div>
